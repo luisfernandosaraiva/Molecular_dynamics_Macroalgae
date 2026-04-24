@@ -1,0 +1,83 @@
+;
+;	File 'topol.top' was generated
+;	By user: univates (1000)
+;	On host: univates-Super-Server
+;	At date: Mon Jan 13 15:39:10 2025
+;
+;	This is a standalone topology file
+;
+;	Created by:
+;	                    :-) GROMACS - gmx pdb2gmx, 2023.3 (-:
+;	
+;	Executable:   /usr/local/gromacs/bin/gmx
+;	Data prefix:  /usr/local/gromacs
+;	Working dir:  /home/univates/Documentos/Ana_Camini/IPLSCC02_apo
+;	Command line:
+;	  gmx pdb2gmx -f protein.pdb -o protein_processed.gro
+;	Force field was read from the standard GROMACS share directory.
+;
+
+; Include forcefield parameters
+#include "amber99sb-ildn.ff/forcefield.itp"
+
+; Include cofactor topologies
+#include "PO4.itp"
+; Ligand position restraints
+#ifdef POSRES
+#include "posre_PO4.itp"
+#endif
+
+; Include chain topologies
+#include "topol_Protein_chain_A.itp"
+#ifdef POSRES
+#include "posre_Protein_chain_A.itp"
+#endif
+#include "topol_Protein_chain_B.itp"
+#ifdef POSRES
+#include "posre_Protein_chain_B.itp"
+#endif
+#include "topol_Protein_chain_C.itp"
+#ifdef POSRES
+#include "posre_Protein_chain_C.itp"
+#endif
+#include "topol_Protein_chain_D.itp"
+#ifdef POSRES
+#include "posre_Protein_chain_D.itp"
+#endif
+#include "topol_Protein_chain_E.itp"
+#ifdef POSRES
+#include "posre_Protein_chain_E.itp"
+#endif
+#include "topol_Protein_chain_F.itp"
+#ifdef POSRES
+#include "posre_Protein_chain_F.itp"
+#endif
+
+; Include water topology
+#include "amber99sb-ildn.ff/tip3p.itp"
+
+#ifdef POSRES_WATER
+; Position restraint for each water oxygen
+[ position_restraints ]
+;  i funct       fcx        fcy        fcz
+   1    1       1000       1000       1000
+#endif
+
+; Include topology for ions
+#include "amber99sb-ildn.ff/ions.itp"
+
+[ system ]
+; Name
+Protein in water
+
+[ molecules ]
+; Compound        #mols
+Protein_chain_A     1
+Protein_chain_B     1
+Protein_chain_C     1
+Protein_chain_D     1
+Protein_chain_E     1
+Protein_chain_F     1
+PO4		    6
+SOL         61016
+NA               2

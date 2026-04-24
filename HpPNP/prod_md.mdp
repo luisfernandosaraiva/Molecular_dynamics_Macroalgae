@@ -1,0 +1,68 @@
+;------------------------------------------------------------PROD_NPT.mdp---------------------------------------------------------------
+
+;----------------------------------------------------Parâmetros de simulação------------------------------------------------------------
+
+define						= -DFLEXIBLE ; 				(Define a flexibilidade/mobilidade do soluto, aqui livre)
+integrator					= md ; 						(Tipo de integrador, aqui o “md”)
+nsteps						= 100000000 ; (200ns)		(Número de passos. nsteps X dt = Tempo da simulação em ps) 500.000 x 0.002 ps = 1000 ps = 1ns
+dt							= 0.002 ; 					(“Time-Step”, tempo para passo de integração)
+
+;------------------------------------------------------Parâmetros de saída---------------------------------------------------------------
+
+nstxout						= 0 ; 			        	(Frequência a escrever as coordenados no arquivo "trr")
+nstvout						= 0 ; 			        	(Frequência a escrever as velocidades em arquivo)
+nstlog						= 5000 ;					(Frequência a escrever as energias no arquivo "log")
+nstxtcout					= 5000 ; 					(Frequência a escrever as coordenadas no arquivo "xtc")
+nstenergy					= 10000 ; 					(Frequência a escrever as energias no arquivo "edr")
+;energygrps					= Protein LIG SOL;			(Determina quais serão os grupos para o monitoramento de energia)
+xtc-grps					= System ;					(Determina quais grupos serão armazenados no arquivo "xtc", caso estiver rodando uma simulação com diferentes grupos colocar "System")
+
+;--------------------------------------------Parâmetros de tratamento das ligações-------------------------------------------------------
+
+continuation				= yes		; 				(Continua a simulação a partir da fase de equilibrio por NPT) 
+constraint_algorithm		= lincs ;					(Método utilizado para restringir/constrangir ligações)
+constraints					= h-bonds ;	 			(Onde serão aplicadas as constrições)
+lincs_iter					= 1		    ;				(Relacionado a acurácia do método de LINCS, para uma melhor minimização pode ser utilizado "2")
+lincs_order					= 4		    ;				(Também relacionado a acurácia do método de LINCS, para uma melhor minimização pode ser utilizado "8")
+
+;------------------------Parâmetros para a atualização das moléculas na caixa de simulação (Neighborsearching)----------------------------
+
+nstlist						= 20 ; 						(Frequência de atualização da lista de vizinhos, em passos)
+rlist						= 1.0 ; 					(Raio de corte para vizinhos de baixo alcance)
+rcoulomb					= 1.0 ; 					(Raio de corte para o tratamento de forças de Coulomb)
+rvdw						= 1.0 ; 					(Raio de corte para Lennard-Jones)
+
+;------------------------------------------------------Tratamento eletrostático e van der Waals-------------------------------------------
+
+coulombtype					= pme ; 					(Esquema de tratamento de forças Coulombianas)
+vdw-type					= cut-off ; 				(Esquema de tratamento van der Waals, aqui “cut-off”)
+pme_order					= 4 ; 						(Cubic interpolation)
+fourierspacing				= 0.16 ; 					(Espaçamento do grid para as transformadas rápidas de Fourier - FFT)
+cutoff-scheme				= verlet ;					(Utiliza o metodo de Verlet de integração para gerar a lista de pares dos atomos vizinhos)
+DispCorr					= Ener ;					(Aplica uma correção para a energia de dispersão de longo alcance)
+
+;---------------------------------------------Termos para o acoplaplamento da Temperatura (sistemas NPT)-----------------------------------
+
+Tcoupl						= v-rescale ; 				(Controle de temperatura, aqui usamos o v-rescale)
+tc-grps						= Protein_PO4 Water_and_Ions ; 	(grupos separados ao banho de temperatura, pode ser utilizado "System")
+tau-t						= 0.1 0.1 ; 				(Constante de tempo para a temperatura)
+ref-t						= 300 300 ; 			(Temperatura, em Kelvin)
+
+;----------------------------------------------Termos para o acoplaplamento da Pressão (sistemas NPT)--------------------------------------
+
+Pcoupl						= Parrinello-Rahman ; 						(Barostato de Parrinello-Rahman)
+pcoupltype					= isotropic;				(O acoplamento da pressão será realizado de forma isotrópica)
+tau_p						= 2.0 ; 					(Valor de Tau, no termostato)
+compressibility				= 4.5e-5 ; 					(Compressibilidade da água a 1 ATM e 300k, unidade em bar-1)
+ref_p						= 1.0 ; 					(Referencial para o barostato de Berendsen)
+
+;-----------------------------------------------------Condições Periódicas de Contorno (PBC)-----------------------------------------------
+
+pbc             			= xyz ;						(Aplica as Condições Periódicas de Contorno ao longo das coordenadas XYZ) 
+
+;-------------------------------------------------------------Geração das Velocidades------------------------------------------------------
+
+gen_vel						= no ; 					(Gerar velocidades iniciais por distribuição de Maxwell)
+
+
+;------------------------------------------------------------------------------------------------------------------------------------------
