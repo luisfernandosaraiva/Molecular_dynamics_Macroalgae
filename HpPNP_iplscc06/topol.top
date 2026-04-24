@@ -1,0 +1,90 @@
+;
+;	File 'topol.top' was generated
+;	By user: univates (1000)
+;	On host: univates-B860MD3HP
+;	At date: Thu Feb 12 14:56:42 2026
+;
+;	This is a standalone topology file
+;
+;	Created by:
+;	                    :-) GROMACS - gmx pdb2gmx, 2025.3 (-:
+;	
+;	Executable:   /usr/local/gromacs/bin/gmx
+;	Data prefix:  /usr/local/gromacs
+;	Working dir:  /home/univates/Documents/Ana_Camini/IPLSCC06
+;	Command line:
+;	  gmx pdb2gmx -f Hexamer_clean.pdb -o hexamer_processed.gro -p topol.top
+;	Force field was read from the standard GROMACS share directory.
+;
+
+; Include forcefield parameters
+#include "amber99sb-ildn.ff/forcefield.itp"
+
+; Fix invalid order for directive atomtypes by defining GAFF atomtypes here
+#include "PO4_GAFF.itp"
+#include "LIG_GAFF.itp"
+
+; Include ligand and cofactor topologies
+#include "PO4.itp"
+#ifdef POSRES
+#include "posre_PO4.itp"
+#endif
+#include "LIG.itp"
+#ifdef POSRES
+#include "posre_LIG.itp"
+#endif
+
+; Include chain topologies
+#include "topol_Protein_chain_A.itp"
+#ifdef POSRES
+#include "posre_Protein_chain_A.itp"
+#endif
+#include "topol_Protein_chain_B.itp"
+#ifdef POSRES
+#include "posre_Protein_chain_B.itp"
+#endif
+#include "topol_Protein_chain_C.itp"
+#ifdef POSRES
+#include "posre_Protein_chain_C.itp"
+#endif
+#include "topol_Protein_chain_D.itp"
+#ifdef POSRES
+#include "posre_Protein_chain_D.itp"
+#endif
+#include "topol_Protein_chain_E.itp"
+#ifdef POSRES
+#include "posre_Protein_chain_E.itp"
+#endif
+#include "topol_Protein_chain_F.itp"
+#ifdef POSRES
+#include "posre_Protein_chain_F.itp"
+#endif
+
+; Include water topology
+#include "amber99sb-ildn.ff/tip3p.itp"
+
+#ifdef POSRES_WATER
+; Position restraint for each water oxygen
+[ position_restraints ]
+;  i funct       fcx        fcy        fcz
+   1    1       1000       1000       1000
+#endif
+
+; Include topology for ions
+#include "amber99sb-ildn.ff/ions.itp"
+
+[ system ]
+; Name
+Protein in water
+
+[ molecules ]
+; Compound        #mols
+Protein_chain_A     1
+Protein_chain_B     1
+Protein_chain_C     1
+Protein_chain_D     1
+Protein_chain_E     1
+Protein_chain_F     1
+PO4	                6
+LIG	                6
+SOL             59520
